@@ -1,0 +1,53 @@
+// COLORS
+$primary-color: #ff7d1a; // link hover line, discount number, company name, border image, icon (+,-), btn, circle on cart,
+$dark-grey: #1d2025; // hover link, hover cart icon, h1 tag, current price, num quantity,
+
+// RESET STYLES
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+}
+a {
+  text-decoration: none;
+}
+ul li {
+  list-style: none;
+}
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Kumbh Sans", sans-serif;
+}
+
+.container {
+  max-width: 114rem;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+%flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%core-btn {
+  background-color: $primary-color;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background-color: lighten($primary-color, 10%);
+  }
+}

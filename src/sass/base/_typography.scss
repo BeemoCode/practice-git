@@ -1,0 +1,111 @@
+body {
+  font-family: "Kumbh Sans", sans-serif;
+}
+.about {
+  &__company-name {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $primary-color;
+  }
+
+  &__article-name {
+    font-size: 4.4rem;
+    letter-spacing: -0.2px;
+    line-height: 1.1;
+    word-spacing: 0.8px;
+  }
+
+  &__description {
+    font-size: 1.6rem;
+    letter-spacing: 0.1px;
+    word-spacing: -0.2px;
+    line-height: 1.62;
+  }
+}
+.cart {
+  &__box-default-text {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    color: hsl(219deg, 9%, 45%);
+  }
+
+  &__quantity {
+    color: #fff;
+    font-size: 0.9rem;
+  }
+}
+.nav {
+  &__list {
+    font-size: 1.55rem;
+  }
+
+  &__link {
+    &:link,
+    &:visited {
+      letter-spacing: -0.1px;
+      color: hsl(219, 9%, 45%);
+    }
+    &:hover,
+    &:active {
+      color: $dark-grey;
+    }
+  }
+}
+.order {
+  &__description {
+    font-size: 1.6rem;
+  }
+
+  &__text {
+    letter-spacing: 0.1px;
+  }
+
+  &__price {
+    letter-spacing: 0.4px;
+    font-size: 1.65rem;
+  }
+
+  &__price--total {
+    font-weight: 700;
+  }
+
+  &__btn--checkout {
+    color: #ffede0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+}
+.price {
+  &__current {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+  }
+
+  &__discount {
+    font-size: 1.55rem;
+    color: #ff7d1a;
+    font-weight: 700;
+  }
+
+  &__previous {
+    color: hsl(220, 14%, 75%);
+    font-weight: 700;
+    font-size: 1.7rem;
+  }
+}
+.purchase {
+  &__quantity {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__add-text {
+    color: hsl(25, 100%, 94%);
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+}

@@ -40,55 +40,13 @@ const render = function () {
     ? (cartBadgeEL.style.opacity = 0)
     : (cartBadgeEL.style.opacity = 1);
 };
-// const getImgPath = function (img) {
-//   // const imgSrc = img.querySelector(".gallery__select-img").getAttribute("src");
-//   const imgSrc = img.getAttribute("src");
-//   return imgSrc.includes("thumbnail")
-//     ? imgSrc.replace("-thumbnail", "")
-//     : imgSrc;
-//   // return imgSrc.replace("-thumbnail", "");
-// };
-// const openLightBox = function (e) {
-//   const closestActive = e.target
-//     .closest(".gallery")
-//     .querySelector(".gallery__select--active")
-//     .querySelector(".gallery__select-img");
-//   const galleryModalImg = document
-//     .querySelector(".gallery__selected--modal")
-//     .querySelector(".gallery__selected-img");
-//   const src = getImgPath(closestActive);
 
-//   console.log(closestActive, galleryModalImg, src);
-//   galleryModalImg.src = src;
-//   galleryModalImg.style.background = `no-repeat url(${src}) center/100% `;
-
-//   modalEL.classList.add("modal--open");
-// };
 const closeLightBox = function (e) {
   const clickedIconClose = e.target.closest(".modal__icon-box--close");
   const clickedGalleryEL = e.target.closest(".gallery--modal");
   if (clickedIconClose || !clickedGalleryEL) {
     modalEL.classList.remove("modal--open");
   }
-};
-
-// ! Вроде работает корректно
-// const changeBigImg = function (clickedImg, src) {
-//   const selectedImgBox = clickedImg
-//     .closest(".gallery")
-//     .querySelector(".gallery__selected");
-//   const selectedImg = clickedImg
-//     .closest(".gallery")
-//     .querySelector(".gallery__selected-img");
-
-//   selectedImg.style.opacity = 0;
-//   selectedImgBox.style.background = `no-repeat url(${src}) center/100% `;
-// };
-
-// Здесь мы как раз таки получаем список ближайших изображений. Сейчас мы попробовали обрабатывать не событие, а переданный элемент.
-const getSelectList = function (elem) {
-  // return e.target.closest(".gallery").querySelectorAll(".gallery__select");
-  return elem.closest(".gallery").querySelectorAll(".gallery__select");
 };
 
 const getImgPath = function (img) {
@@ -145,133 +103,65 @@ const openLightBox = function (e) {
 };
 
 const changeImg = function (e) {
-  // 1. Берем ближайшее изображение, так как две галереи.
   const clickedSelect = e.target.closest(".gallery__select");
   if (!clickedSelect) return;
-
   const clickedImg = clickedSelect.querySelector(".gallery__select-img");
-  // 2.
-  // 3. Дальше получаем список соседних изображений чтобы убрать с них активный класс при каждом клике.
-  const selectImgs = getSelectList(clickedImg);
-  //
-  selectImgs.forEach((el) => {
-    el.classList.remove("gallery__select--active");
-  });
-  // Вешаем класс актив на выбранный элемент
-  // clickedSelect.classList.add("gallery__select--active");
-  changeSelectActive(clickedSelect);
 
-  // Меняем большую картинку
-  // changeBigImg(clickedImg, getImgPath(clickedImg));
+  changeSelectActive(clickedSelect);
   changeBigImg(clickedImg, false, getImgPath(clickedImg));
+
+  // update current image
+  const listImgs = clickedSelect
+    .closest(".gallery")
+    .querySelectorAll(".gallery__select-img");
+  listImgs.forEach((el, i) => {
+    el.src === clickedImg.src && (state.curImg = i);
+  });
+};
+const changeActiveImg = function (e, type) {
+  const closestActiveSelect = e.target
+    .closest(".gallery")
+    .querySelector(".gallery__select--active");
+
+  const selects = closestActiveSelect
+    .closest(".gallery")
+    .querySelectorAll(".gallery__select");
+
+  const lastImg = selects.length;
+
+  const goToActive = function (pos) {
+    selects.forEach((select, i) => {
+      const selectImg = select.querySelector(".gallery__select-img");
+      if (i === pos) {
+        changeSelectActive(select);
+        changeBigImg(selectImg, false, getImgPath(selectImg));
+      } else {
+        select.classList.remove("gallery__select--active");
+      }
+    });
+  };
+  const nextImg = function () {
+    if (state.curImg === lastImg - 1) {
+      state.curImg = 0;
+    } else {
+      state.curImg++;
+    }
+    goToActive(state.curImg);
+  };
+  const prevImg = function () {
+    if (state.curImg === 0) {
+      state.curImg = lastImg - 1;
+    } else {
+      state.curImg--;
+    }
+
+    goToActive(state.curImg);
+  };
+
+  type === "next" ? nextImg() : prevImg();
 };
 
-// const changeActiveImg = function (e, type) {
-//   const closestActive = e.target
-//     .closest(".gallery")
-//     .querySelector(".gallery__select--active");
-//   const selectImgs = getSelectList(closestActive);
-//   const lastImg = selectImgs.length;
-
-//   const goToActive = function (img) {
-//     selectImgs.forEach((selectImg, i) => {
-//       if (i === img) {
-//         selectImg.classList.add("gallery__select--active");
-//         changeBigImg(selectImg, getImgPath(selectImg));
-//       } else {
-//         selectImg.classList.remove("gallery__select--active");
-//       }
-//     });
-//   };
-//   const nextImg = function () {
-//     if (state.curImg === lastImg - 1) {
-//       state.curImg = 0;
-//     } else {
-//       state.curImg++;
-//     }
-//     goToActive(state.curImg);
-//   };
-//   const prevImg = function () {
-//     if (state.curImg === 0) {
-//       state.curImg = lastImg - 1;
-//     } else {
-//       state.curImg--;
-//     }
-
-//     goToActive(state.curImg);
-//   };
-
-//   type === "next" ? nextImg() : prevImg();
-// };
-
-// * test
-// const changeActiveImg = function (e, type) {
-//   // При клике
-//   const clickedImg = e.target.closest(".gallery__select");
-//   // Для кнопок
-//   const selectImgs = e.target
-//     .closest(".gallery")
-//     .querySelectorAll(".gallery__select");
-//   const lastImg = selectImgs.length;
-
-//   if (clickedImg) {
-//     const imgSrc = clickedImg
-//       .querySelector(".gallery__select-img")
-//       .getAttribute("src");
-//     const fullImgSrcPath = imgSrc.replace("-thumbnail", "");
-//     selectImgs.forEach((el) => {
-//       el.classList.remove("gallery__select--active");
-//     });
-//     clickedImg.classList.add("gallery__select--active");
-
-//     const selectedImgBox = clickedImg
-//       .closest(".gallery")
-//       .querySelector(".gallery__selected");
-//     const selectedImg = clickedImg
-//       .closest(".gallery")
-//       .querySelector(".gallery__selected-img");
-//     console.log(selectedImg);
-
-//     selectedImg.style.opacity = 0;
-//     selectedImgBox.style.background = `no-repeat url(${fullImgSrcPath}) center/100% `;
-//   }
-
-//   const goToActive = function (img) {
-//     selectImgs.forEach((el, i) => {
-//       i === img
-//         ? el.classList.add("gallery__select--active")
-//         : el.classList.remove("gallery__select--active");
-//     });
-//   };
-//   const nextImg = function () {
-//     if (state.curImg === lastImg - 1) {
-//       state.curImg = 0;
-//     } else {
-//       state.curImg++;
-//     }
-//     goToActive(state.curImg);
-//   };
-//   const prevImg = function () {
-//     if (state.curImg === 0) {
-//       state.curImg = lastImg - 1;
-//     } else {
-//       state.curImg--;
-//     }
-
-//     goToActive(state.curImg);
-//   };
-//   document.addEventListener("keydown", (e) => {
-//     if (e.key === "ArrowLeft") prevImg();
-//     e.key === "ArrowRight" && nextImg();
-//   });
-//   type === "next" ? nextImg() : prevImg();
-// };
-
-/* 
-
-* Обработчики событий 
-
-*/
+/* * Обработчики событий */
 
 nextImgBtnEL.addEventListener("click", (e) => {
   changeActiveImg(e, "next");
@@ -280,7 +170,6 @@ previousImgBtnEL.addEventListener("click", (e) => {
   changeActiveImg(e, "prev");
 });
 
-////
 cartBoxContentEL.addEventListener("click", (e) => {
   e.stopPropagation();
   const deleteBtn = e.target.closest(".order__btn--delete");
