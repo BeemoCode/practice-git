@@ -1,0 +1,19 @@
+.user {
+  @extend %flex-center;
+
+  flex: 0 0 5rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border: 2px solid $primary-color;
+  }
+
+  &__img {
+    height: 5rem;
+  }
+}
